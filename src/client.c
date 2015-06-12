@@ -35,10 +35,16 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 
-static const char *uniqueFileName = "uniqueid.dat";
-static const char *certificateFileName = "client.pem";
-static const char *p12FileName = "client.p12";
-static const char *keyFileName = "key.pem";
+char *uniqueFileName = "uniqueid.dat";
+char *certificateFileName = "client.pem";
+char *p12FileName = "client.p12";
+char *keyFileName = "key.pem";
+static void set_cert_dir(char *certDir) { 
+    strcat(certDir,uniqueFileName);
+    strcat(certDir,certificateFileName);
+    strcat(certDir,p12FileName);
+    strcat(certDir,keyFileName);
+}
 
 #define UNIQUEID_BYTES 8
 #define UNIQUEID_CHARS (UNIQUEID_BYTES*2)
@@ -51,6 +57,7 @@ static EVP_PKEY *privateKey;
 static bool paired;
 static int currentGame;
 static int serverMajorVersion;
+
 
 static void client_load_unique_id() {
   FILE *fd = fopen(uniqueFileName, "r");

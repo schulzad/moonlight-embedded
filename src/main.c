@@ -104,6 +104,7 @@ static void help() {
   printf("\t-mapping <file>\t\tUse <file> as gamepad mapping configuration file (use before -input)\n");
   printf("\t-audio <device>\t\tUse <device> as ALSA audio output device (default sysdefault)\n");
   printf("\t-localaudio\t\tPlay audio locally\n");
+  printf("\t-certdir\t\tDirectory location of certificate file (default current directory)\n");
   exit(0);
 }
 
@@ -174,6 +175,7 @@ int main(int argc, char* argv[]) {
     {"nosops", no_argument, 0, 'l'},
     {"audio", required_argument, 0, 'm'},
     {"localaudio", no_argument, 0, 'n'},
+    {"certdir", required_argument, 0, 'o'},
     {0, 0, 0, 0},
   };
 
@@ -185,7 +187,7 @@ int main(int argc, char* argv[]) {
   bool sops = true;
   bool localaudio = false;
   int c;
-  while ((c = getopt_long_only(argc, argv, "-abc:d:efg:h:i:j:k:lm:n", long_options, &option_index)) != -1) {
+  while ((c = getopt_long_only(argc, argv, "-abc:d:efg:h:i:j:k:lm:n:o", long_options, &option_index)) != -1) {
     switch (c) {
     case 'a':
       config.width = 1280;
@@ -231,6 +233,8 @@ int main(int argc, char* argv[]) {
     case 'n':
       localaudio = true;
       break;
+    case 'o':
+      certdir = get_path(optarg);
     case 1:
       if (action == NULL)
         action = optarg;
